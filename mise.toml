@@ -1,0 +1,17 @@
+# The Rust version CI uses is pinned in rust-toolchain.toml.
+
+[tasks.test]
+description = "Run the test suite (needs poppler)"
+run = "cargo test"
+
+[tasks.lint]
+description = "Check formatting and clippy lints, as CI does"
+run = ["cargo fmt --check", "cargo clippy --all-targets -- -D warnings"]
+
+[tasks.sample]
+description = "Regenerate the README sample invoice (needs poppler and ImageMagick)"
+run = "bin/sample"
+
+[tasks.release]
+description = "Tag and publish a release: mise run release X.Y.Z"
+run = "bin/release"

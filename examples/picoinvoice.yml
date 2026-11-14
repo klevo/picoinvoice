@@ -1,0 +1,49 @@
+# Example picoinvoice configuration. All names, numbers and accounts are made up.
+# Copy to ~/.config/picoinvoice.yml and adjust.
+
+# Folder the invoices are saved to. `~` expands to your home folder.
+output: ~/Documents/Invoices
+
+from:
+  name: Jana Nováková
+  address:
+    street: Hlavná 12
+    city: Bratislava
+    postal_code: 811 01
+    country: Slovakia
+  registration_number: "12345678"
+  tax_number: "2020123456"
+  # Extra lines printed under your details, e.g. a VAT note.
+  notes:
+    - Reverse charge / VAT not applicable
+  bank_details:
+    bank_name: Example Bank, a.s.
+    account_holder_name: Jana Nováková
+    account_number: SK00 1234 0000 0012 3456 7890
+    swift_code: EXMPSKBX
+    address:
+      street: Námestie SNP 1
+      city: Bratislava
+      postal_code: 811 01
+      country: Slovakia
+
+bill_to:
+  name: Acme Software Inc.
+  address:
+    street: 100 King St W
+    city: Toronto
+    province: "ON"
+    postal_code: M5X 1A9
+    country: Canada
+
+# The single line item. The previous month is appended to the description,
+# and the quantity is the number of hours given on the command line.
+item:
+  description: Software Engineering
+  unit_price: EUR 45.00
+
+# Days from the issue date until payment is due.
+payment_days: 14
+
+# Hours billed when --hours is not given.
+default_hours: 160

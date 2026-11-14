@@ -1,0 +1,37 @@
+# Made-up data: a different currency and a five-digit total.
+output: ./invoices
+
+from:
+  name: Example Consulting s.r.o.
+  address:
+    street: Obchodná 21
+    city: Bratislava
+    postal_code: 811 06
+    country: Slovakia
+  registration_number: "11223344"
+  tax_number: "2023344556"
+  notes:
+    - Reverse charge / VAT not applicable
+  bank_details:
+    bank_name: Example Bank, a.s.
+    account_holder_name: Example Consulting s.r.o.
+    account_number: SK00 1234 0000 0055 6677 8899
+    swift_code: EXMPSKBX
+    address:
+      street: Námestie SNP 1
+      city: Bratislava
+      postal_code: 811 01
+      country: Slovakia
+
+bill_to:
+  name: Granite Peak Labs Corp.
+  address:
+    street: 800 Burrard St, Suite 1500
+    city: Vancouver
+    province: BC
+    postal_code: V6Z 2V6
+    country: Canada
+
+item:
+  description: Software Engineering
+  unit_price: USD 95.50

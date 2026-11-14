@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Regenerates the README sample, docs/sample-invoice.pdf and docs/sample-invoice.png,
+# from examples/picoinvoice.yml. Needs poppler (pdftoppm) and ImageMagick (magick).
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+for tool in pdftoppm magick; do
+  command -v "$tool" >/dev/null || { echo "bin/sample needs $tool (brew install poppler imagemagick)" >&2; exit 1; }
+done
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+# Write into a scratch folder that already holds invoice 2026008, so the sample is 2026009.
+sed "s|^output: .*|output: $tmp|" examples/picoinvoice.yml > "$tmp/picoinvoice.yml"
+touch "$tmp/2026008.pdf"
+cargo run --quiet -- --config "$tmp/picoinvoice.yml" --date 2026-10-01 --hours 168 > /dev/null
+
+mkdir -p docs
+cp "$tmp/2026009.pdf" docs/sample-invoice.pdf
+# 144 dpi stays sharp on high-density screens; the border keeps the white page
+# visible on GitHub's light theme.
+pdftoppm -r 144 -png -singlefile docs/sample-invoice.pdf "$tmp/sample"
+magick "$tmp/sample.png" -bordercolor '#d0d7de' -border 2 -strip docs/sample-invoice.png
+echo "Updated docs/sample-invoice.pdf and docs/sample-invoice.png"

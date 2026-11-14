@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install poppler
+        run: |
+          if [ "$RUNNER_OS" = Linux ]; then
+            sudo apt-get update && sudo apt-get install --yes poppler-utils
+          else
+            brew install poppler
+          fi
+
+      # Installs the toolchain pinned in rust-toolchain.toml.
+      - name: Set up Rust
+        run: rustup toolchain install
+
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+
+      - name: Check formatting
+        run: cargo fmt --check
+
+      - name: Clippy
+        run: cargo clippy --all-targets --locked -- -D warnings
+
+      - name: Test
+        run: cargo test --locked
+
+      - name: Upload comparison output
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: reference-diffs-${{ matrix.os }}
+          path: target/reference-diffs/
+          if-no-files-found: ignore

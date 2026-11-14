@@ -1,0 +1,37 @@
+# Made-up data with Slovak and French diacritics.
+output: ./invoices
+
+from:
+  name: Ľubomír Ďurčo
+  address:
+    street: Štúrova 7
+    city: Žilina
+    postal_code: 010 01
+    country: Slovenská republika
+  registration_number: "87654321"
+  tax_number: "2120987654"
+  notes:
+    - Reverse charge / VAT not applicable
+  bank_details:
+    bank_name: Príkladná banka, a.s.
+    account_holder_name: Ľubomír Ďurčo
+    account_number: SK00 9876 0000 0098 7654 3210
+    swift_code: PRIKSKBX
+    address:
+      street: Ťahanovská 14
+      city: Košice
+      postal_code: 040 11
+      country: Slovenská republika
+
+bill_to:
+  name: Café Électrique Ltée
+  address:
+    street: 1234 rue Saint-Denis
+    city: Montréal
+    province: QC
+    postal_code: H2X 3K8
+    country: Canada
+
+item:
+  description: Software Engineering
+  unit_price: EUR 40.00

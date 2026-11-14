@@ -1,0 +1,29 @@
+[package]
+name = "picoinvoice"
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.92"
+description = "Generate a monthly hours-based PDF invoice from a YAML file"
+license = "MIT"
+repository = "https://github.com/klevo/picoinvoice"
+readme = "README.md"
+keywords = ["invoice", "pdf", "cli", "freelance"]
+categories = ["command-line-utilities"]
+exclude = ["/assets/invoices", "/docs", "/tests", "/bin", "/.github"]
+
+[dependencies]
+clap = { version = "4.6", features = ["derive"] }
+jiff = "0.2"
+krilla = { version = "0.8", default-features = false }
+serde = { version = "1", features = ["derive"] }
+serde-saphyr = "2.1"
+skrifa = "0.42"
+
+[dev-dependencies]
+assert_cmd = "2"
+tempfile = "3"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

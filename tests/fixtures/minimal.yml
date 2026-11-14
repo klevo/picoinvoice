@@ -1,0 +1,23 @@
+# Made-up data. No registration or tax number, no notes, no bank details,
+# and a client address without a province.
+output: ./invoices
+
+from:
+  name: Peter Horváth
+  address:
+    street: Dlhá 3
+    city: Košice
+    postal_code: 040 01
+    country: Slovakia
+
+bill_to:
+  name: Beispiel GmbH
+  address:
+    street: Musterstraße 5
+    city: Berlin
+    postal_code: "10115"
+    country: Germany
+
+item:
+  description: Consulting
+  unit_price: EUR 40.00
