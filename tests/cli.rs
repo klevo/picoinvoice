@@ -223,6 +223,32 @@ fn prepares_without_writing_and_never_overwrites() {
 
     prepared.save().unwrap();
     assert_pdf(&prepared.path);
+}
+
+/// The next number normally points at a free file name, but another file can appear
+/// there before saving, e.g. from a second run at the same time.
+#[test]
+fn never_overwrites_an_existing_file() {
+    let setup = Setup::new();
+    let prepared = picoinvoice::prepare(&setup.config_path(), date(2026, 3, 2), Some(10), None).unwrap();
+    std::fs::create_dir_all(setup.invoices()).unwrap();
+    std::fs::write(&prepared.path, "an existing invoice").unwrap();
+
+    let err = prepared.save().unwrap_err();
+    assert_eq!(err.to_string(), format!("{} already exists, not overwriting it", prepared.path.display()));
+    assert_eq!(std::fs::read_to_string(&prepared.path).unwrap(), "an existing invoice");
+}
+
+#[cfg(unix)]
+#[test]
+fn never_writes_through_a_symlink() {
+    let setup = Setup::new();
+    let prepared = picoinvoice::prepare(&setup.config_path(), date(2026, 3, 2), Some(10), None).unwrap();
+    let elsewhere = setup.path().join("elsewhere.pdf");
+    std::fs::create_dir_all(setup.invoices()).unwrap();
+    std::os::unix::fs::symlink(&elsewhere, &prepared.path).unwrap();
+
     let err = prepared.save().unwrap_err();
     assert!(err.to_string().contains("already exists"), "{err}");
+    assert!(!elsewhere.exists(), "the symlink target must not be created");
 }
