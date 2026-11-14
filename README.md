@@ -64,7 +64,8 @@ quantity. Payment is due `payment_days` after the issue date.
 The PDF is saved to the config's `output` folder as `{number}.pdf`. The number is the
 year followed by three digits, one higher than the highest invoice of that year already
 in the folder, so the first invoice of 2027 is `2027001`. Other files in the folder are
-ignored, and an existing file is never overwritten.
+ignored. picoinvoice never overwrites a file: if the target already exists, it exits
+with an error and leaves the file alone.
 
 ## Configuration
 
